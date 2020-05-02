@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -40,4 +41,7 @@ class LoginController extends Controller
 
     //ログインで必要なユーザー名を指定
     public function username(){ return 'name'; }
+
+    //ログアウト後の移行先を変更
+    public function loggedOut(Request $request){    return redirect('/');   }
 }
