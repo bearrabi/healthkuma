@@ -18,6 +18,7 @@ class UserController extends Controller
         //get auth ID
         $id = auth()->user()->id;
          
+        return view('user.index');
     }
 
     /**
