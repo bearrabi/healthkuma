@@ -14,7 +14,10 @@ class CreateWeightsTable extends Migration
     public function up()
     {
         Schema::create('weights', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->double('weight', 3, 1);
+            $table->dateTime('measure_dt');
             $table->timestamps();
         });
     }
