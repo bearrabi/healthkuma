@@ -13,10 +13,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    //show grapgh
     public function index()  
     {
         //get auth ID
         $id = auth()->user()->id;
+
+        //get user's weights info
+
+        //get user's templeture info
          
         return view('user.index');
     }
@@ -27,6 +32,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    //show list and graph
     public function show($id)
     {
         return view('user.show');
@@ -38,6 +44,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    //edit username or password
     public function edit($id)
     {
         return view('user.edit');        
@@ -61,6 +68,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    //delete user info
     public function destroy($id)
     {
         //
