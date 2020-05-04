@@ -68,7 +68,7 @@ class WeightController extends Controller
             'month' => date('m',strtotime($dt_all)),
             'day' => date('d',strtotime($dt_all)),
             'hour' => date('H', strtotime($dt_all)),
-            'minutes' => date('i', strtotime($dt_all)),
+            'minute' => date('i', strtotime($dt_all)),
             'second' => date('s', strtotime($dt_all)),
             'weight' => $weight_info->weight
         ];
