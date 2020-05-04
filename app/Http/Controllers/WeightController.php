@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Weight;
 
 class WeightController extends Controller
 {
@@ -56,7 +57,23 @@ class WeightController extends Controller
      */
     public function edit($id)
     {
-        return view('weight.edit');        
+        //get db data from weights tables by id
+        $weight_info = Weight::find($id);
+
+        //divide date time 
+        $dt_all = $weight_info->measure_dt;
+        $weights = [
+            'id' => $id,
+            'year' => date('Y', strtotime($dt_all)),
+            'month' => date('m',strtotime($dt_all)),
+            'day' => date('d',strtotime($dt_all)),
+            'hour' => date('H', strtotime($dt_all)),
+            'minutes' => date('i', strtotime($dt_all)),
+            'second' => date('s', strtotime($dt_all)),
+            'weight' => $weight_info->weight
+        ];
+        
+        return view('weight.edit', compact('weights'));        
     }
 
     /**
