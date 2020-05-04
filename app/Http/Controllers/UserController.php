@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use App\User;  //ユーザーモデル
+use App\User;       //ユーザーモデル
+use App\Weight;     //weightモデル
+use App\Temperature;//temperatureモデル
 
 class UserController extends Controller
 {
@@ -16,14 +18,15 @@ class UserController extends Controller
     //show grapgh
     public function index()  
     {
-        //get auth ID
+    //get auth ID
         $id = auth()->user()->id;
 
         //get user's weights info
+        $weights = Weight::where('user_id', $id)->orderby('measure_dt')->get();
 
         //get user's templeture info
-         
-        return view('user.index');
+        $temps = Temperature::where('user_id', $id)->orderby('measure_dt')->get();
+        return view('user.index', compact('weights','temps'));
     }
 
     /**
