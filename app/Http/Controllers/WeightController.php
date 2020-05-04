@@ -62,6 +62,8 @@ class WeightController extends Controller
 
         //divide date time 
         $dt_all = $weight_info->measure_dt;
+        $arr_weight = explode(".", $weight_info->weight);
+
         $weights = [
             'id' => $id,
             'year' => date('Y', strtotime($dt_all)),
@@ -70,9 +72,10 @@ class WeightController extends Controller
             'hour' => date('H', strtotime($dt_all)),
             'minute' => date('i', strtotime($dt_all)),
             'second' => date('s', strtotime($dt_all)),
-            'weight' => $weight_info->weight
+            'weight1' => $arr_weight[0],
+            'weight2' => $arr_weight[1],
         ];
-        
+        //dd($weights);
         return view('weight.edit', compact('weights'));        
     }
 
