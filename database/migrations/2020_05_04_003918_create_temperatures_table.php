@@ -14,7 +14,10 @@ class CreateTemperaturesTable extends Migration
     public function up()
     {
         Schema::create('temperatures', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->double('temperature', 3, 1);
+            $table->dateTime('measure_dt');
             $table->timestamps();
         });
     }
