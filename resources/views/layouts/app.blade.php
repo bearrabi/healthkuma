@@ -77,6 +77,7 @@
         </main>
     </div>
 
+    
     <script>
         function delete_alert(e){
         if(!window.confirm('本当に削除しても大丈夫ですか？')){
