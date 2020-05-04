@@ -13,7 +13,7 @@ class TemperatureController extends Controller
      */
     public function index()
     {
-        //
+        return view('temperature.index');
     }
 
     /**
@@ -23,7 +23,7 @@ class TemperatureController extends Controller
      */
     public function create()
     {
-        //
+        return view('temperature.create');        
     }
 
     /**
@@ -45,7 +45,7 @@ class TemperatureController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('temperature.show');        
     }
 
     /**
@@ -56,7 +56,7 @@ class TemperatureController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('temperature.edit');
     }
 
     /**
