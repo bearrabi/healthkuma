@@ -13,7 +13,7 @@ class WeightController extends Controller
      */
     public function index()
     {
-        //
+        return view('weight.index');
     }
 
     /**
@@ -23,7 +23,7 @@ class WeightController extends Controller
      */
     public function create()
     {
-        //
+        return view('weight.create');
     }
 
     /**
@@ -45,7 +45,7 @@ class WeightController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('weight.show');
     }
 
     /**
@@ -56,7 +56,7 @@ class WeightController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('weight.edit');        
     }
 
     /**
