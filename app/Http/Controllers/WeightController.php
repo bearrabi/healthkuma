@@ -73,7 +73,7 @@ class WeightController extends Controller
             'minute' => date('i', strtotime($dt_all)),
             'second' => date('s', strtotime($dt_all)),
             'weight1' => $arr_weight[0],
-            'weight2' => $arr_weight[1],
+            'weight2' => $arr_weight[1]
         ];
         //dd($weights);
         return view('weight.edit', compact('weights'));        
@@ -88,7 +88,14 @@ class WeightController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //get db data from weights table by id
+        $weight = Weight::find($id);
+        
+        //set request data to weights table
+        $weight->weight = $request->weight1.".".$request->weight2;
+        $weight->save();
+
+        return redirect('user');
     }
 
     /**
@@ -99,6 +106,6 @@ class WeightController extends Controller
      */
     public function destroy($id)
     {
-        //
+       
     }
 }
