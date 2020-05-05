@@ -28,7 +28,49 @@ class WeightController extends Controller
      */
     public function create()
     {
-        return view('weight.create');
+        //set years     ※±1month
+        $now_year = date('Y');
+        for ($i=0;$i<3;$i++){
+            $year = $now_year - 1 + $i;
+            if ($year == $now_year){    $years[$year] = true;}
+            else{ $years[$year] = false;  }
+        }
+
+        //set months
+        $now_month = date('m');
+        for ($i=1;$i<13;$i++){  
+            if ($i == $now_month){  $months[$i] = true; }
+            else{   $months[$i] = false;   }
+        }
+
+        //set days
+        $now_day = date('d');
+        for ($i=1;$i<32;$i++){  
+            if ($i == $now_day){    $days[$i] = true; }
+            else{   $days[$i] = false; }
+        }
+
+        //set hours
+        $now_hour = date('H');
+        for ($i=0;$i<25;$i++){
+            if ($i == $now_hour){  $hours[$i] = true;  }
+            else{   $hours[$i] = false; }
+        }
+
+        //set minutes
+        $now_minute = date('i');
+        for ($i=0;$i<60;$i++){
+            if ($i == $now_minute){  $minutes[$i] = true;  }
+            else{   $minutes[$i] = false; }
+        }
+         
+        $now_second = date('i');
+        for ($i=0;$i<60;$i++){
+            if ($i == $now_second){  $seconds[$i] = true;  }
+            else{   $seconds[$i] = false; }
+        }
+        //dd($years,$months,$days);
+        return view('weight.create', compact('years','months','days','hours','minutes','seconds'));
     }
 
     /**
