@@ -14,7 +14,11 @@ class WeightController extends Controller
      */
     public function index()
     {
-        return view('weight.index');
+        //get db data from weights table by id
+        $id = auth()->user()->id;
+        $weights = Weight::where('user_id', $id)->get();
+        //dd($weights);
+        return view('weight.index', compact('weights'));
     }
 
     /**
