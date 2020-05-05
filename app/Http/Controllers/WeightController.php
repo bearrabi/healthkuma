@@ -106,6 +106,10 @@ class WeightController extends Controller
      */
     public function destroy($id)
     {
-       
+        //delete db data from weights table by id
+        $weight = Weight::find($id);
+        $weight->delete();
+
+        return redirect('user');
     }
 }
