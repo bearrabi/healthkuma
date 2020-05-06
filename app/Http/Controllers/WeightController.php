@@ -64,12 +64,13 @@ class WeightController extends Controller
             else{   $minutes[$i] = false; }
         }
          
-        $now_second = date('i');
+        //set seconds
+        $now_second = date('s');
         for ($i=0;$i<60;$i++){
             if ($i == $now_second){  $seconds[$i] = true;  }
             else{   $seconds[$i] = false; }
         }
-        //dd($years,$months,$days);
+        
         return view('weight.create', compact('years','months','days','hours','minutes','seconds'));
     }
 
@@ -81,7 +82,20 @@ class WeightController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //set db data from auth id
+        $id = auth()->user()->id;
+        $date = $request->year.'-'.$request->month.'-'.$request->day;
+        $time = ' '.$request->hour.':'.$request->minute.':'.$request->second;
+        $weight_req = (double)$request->weight1.'.'.$request->weight2;
+    
+        //write db data to weights table
+        $weight = new Weight;
+        $weight->user_id = $id;
+        $weight->measure_dt = $date.$time;
+        $weight->weight = $weight_req;
+        $weight->save();
+
+        return redirect('weight');
     }
 
     /**
@@ -138,7 +152,8 @@ class WeightController extends Controller
         $weight = Weight::find($id);
         
         //set request data to weights table
-        $weight->weight = $request->weight1.".".$request->weight2;
+        $weight_req = (double)$request->weight1.".".$request->weight2;
+        $weight->weight = $weight_req;
         $weight->save();
 
         return redirect('user');
