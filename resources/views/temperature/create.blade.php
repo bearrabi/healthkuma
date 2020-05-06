@@ -85,11 +85,11 @@
 
       <!--体温-->
       <div class="form-group">
-        <label for="weight1">体温</label>
+        <label for="temperature1">体温</label>
       </div>
       <div class="form-inline">
-        <input name="weight1" type="text" class="form-control txtbx" id="weight1"><span id="dot">.</span>
-        <input name="weight2" type="text" class="form-control txtbx" id="weight2"><span id="deg">°</span>
+        <input name="temperature1" type="text" class="form-control txtbx" id="temperature1"><span id="dot">.</span>
+        <input name="temperature2" type="text" class="form-control txtbx" id="temperature2"><span id="deg">°</span>
       </div>
       <br><br>
 
