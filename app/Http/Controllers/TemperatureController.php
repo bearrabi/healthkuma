@@ -116,7 +116,27 @@ class TemperatureController extends Controller
      */
     public function edit($id)
     {
-        return view('temperature.edit');
+        //get db data from weights tables by id
+        $temperature_info = Temperature::find($id);
+
+        //divide date time 
+        $dt_all = $temperature_info->measure_dt;
+        $arr_temperature = explode(".", $temperature_info->temperature);
+
+        //set argvs to edit view
+        $temperatures = [
+            'id' => $id,
+            'year' => date('Y', strtotime($dt_all)),
+            'month' => date('m',strtotime($dt_all)),
+            'day' => date('d',strtotime($dt_all)),
+            'hour' => date('H', strtotime($dt_all)),
+            'minute' => date('i', strtotime($dt_all)),
+            'second' => date('s', strtotime($dt_all)),
+            'temperature1' => $arr_temperature[0],
+            'temperature2' => $arr_temperature[1]
+        ];
+
+        return view('temperature.edit',compact('temperatures'));
     }
 
     /**
@@ -128,7 +148,15 @@ class TemperatureController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+         //get db data from weights table by id
+         $temperature = Temperature::find($id);
+        
+         //set request data to weights table
+         $temperature_req = (double)$request->temperature1.".".$request->temperature2;
+         $temperature->temperature = $temperature_req;
+         $temperature->save();
+ 
+         return redirect('user');
     }
 
     /**
