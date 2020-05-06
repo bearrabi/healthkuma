@@ -167,6 +167,9 @@ class TemperatureController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $temperature = Temperature::find($id);
+        $temperature->delete();
+
+        return redirect('user');
     }
 }
