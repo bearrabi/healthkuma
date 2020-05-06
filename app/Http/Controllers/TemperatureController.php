@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Temperature;
 
 class TemperatureController extends Controller
 {
@@ -80,7 +81,20 @@ class TemperatureController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //set db data from auth id
+        $id = auth()->user()->id;
+        $date = $request->year.'-'.$request->month.'-'.$request->day;
+        $time = ' '.$request->hour.':'.$request->minute.':'.$request->second;
+        $temperature_req = (double)$request->temperature1.'.'.$request->temperature2;
+    
+        //write db data to weights table
+        $temperature = new Temperature;
+        $temperature->user_id = $id;
+        $temperature->measure_dt = $date.$time;
+        $temperature->temperature = $temperature_req;
+        $temperature->save();
+
+        return redirect('temperature');
     }
 
     /**
