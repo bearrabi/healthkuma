@@ -13,7 +13,10 @@ class TemperatureController extends Controller
      */
     public function index()
     {
-        return view('temperature.index');
+        //get db data from weights table by id
+        $temps = auth()->user()->temperatures;
+        
+        return view('temperature.index',compact('temps'));
     }
 
     /**
