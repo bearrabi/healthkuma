@@ -158,7 +158,7 @@ class WeightController extends Controller
 
         return redirect('user');
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
