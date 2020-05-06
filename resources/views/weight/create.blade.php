@@ -52,7 +52,7 @@
         <label for="hour">時刻</label>
       </div>
       <div class="form-inline">
-      <select name="year" id="hour" class="form-control selectbx">
+      <select name="hour" id="hour" class="form-control selectbx">
             @foreach($hours as $key => $value)
               @if ($value == true)
                 <option value="{{$key}}" selected>{{$key}}</option>
