@@ -17,8 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('user', 'UserController',['except' => ['create', 'store']]);
-Route::resource('weight', 'WeightController');
-Route::resource('temperature', 'TemperatureController');
+Route::group(['middleware' => 'auth'], function(){
+    Route::get('/home', 'UserController@index')->name('home');
+    Route::resource('user', 'UserController',['except' => ['create', 'store']]);
+    Route::resource('weight', 'WeightController',['except' => 'show']);
+    Route::resource('temperature', 'TemperatureController',['except' => 'show']);
+});
 Auth::routes();
