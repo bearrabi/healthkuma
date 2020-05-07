@@ -39,6 +39,21 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    //バリデーション
+    protected function validateLogin(Request $request){
+        
+        $messages = [
+            $this->username().'.required' => 'Nameを入力してください',
+            $this->username().'.alpha_num' => 'Nameは英数字で入力してください',
+            'password.required' => 'パスワードを入力してください',
+        ];
+
+        $request->validate([
+            $this->username() => 'required|alpha_num',
+            'password' => 'required|string',
+        ], $messages);
+    }
+
     //ログインで必要なユーザー名を指定
     public function username(){ return 'name'; }
 
