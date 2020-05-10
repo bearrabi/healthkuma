@@ -18,7 +18,7 @@ class UserController extends Controller
     //show grapgh
     public function index()  
     {
-    //get auth ID
+        //get auth ID
         $id = auth()->user()->id;
 
         //get user's weights info
@@ -26,7 +26,54 @@ class UserController extends Controller
 
         //get user's templeture info
         $temps = Temperature::where('user_id', $id)->orderby('measure_dt')->get();
-        return view('user.index', compact('weights','temps'));
+
+        //create views graph data at weight
+        $weights_info_before_json = $this->CretateViewsGraphData($weights , 'weight');
+        
+        //create views graph data at temperature
+        $temps_info_before_json = $this->CretateViewsGraphData($temps , 'temperature');
+
+        //encode array to json at weight
+        $json_for_graph_w = json_encode($weights_info_before_json);
+
+        //encode array to json at temperature
+        $json_for_graph_t = json_encode($temps_info_before_json);
+
+        //dd($json_for_graph_t);
+        return view('user.index', compact('weights','temps','json_for_graph_w','json_for_graph_t'));
+    }
+
+    //create view's graph data
+    private function CretateViewsGraphData($m_arr_from_db, $m_contents_title){
+        
+        $send_to_view_json = array();
+        $first_dimension_index = -1;
+
+        //set graph data to array
+        $year_month_lblnm = 'year_month';
+        foreach($m_arr_from_db as $row){
+            
+            //fetch year_and_month from db row
+            $year_month_value = date('Y/m', strtotime($row->measure_dt));
+
+            //write year_month label name and value
+            if ($first_dimension_index == -1 || 
+                $send_to_view_json[$first_dimension_index][$year_month_lblnm] != $year_month_value){
+                $first_dimension_index++;
+                $send_to_view_json[$first_dimension_index] = ['year_month' => $year_month_value]; 
+            }
+
+            //fetch data per day from db row
+            $measure_day    = date('d',strtotime($row->measure_dt));
+            if ($m_contents_title == 'weight'       ){  $measure_value = $row->weight;       }
+            if ($m_contents_title == 'temperature'  ){  $measure_value = $row->temperature;  }
+
+            //write db data per day 
+            $measure_values_from_row = ['day' => $measure_day, $m_contents_title => $measure_value];
+            $arr_weight_info = [ $m_contents_title.'_info' => $measure_values_from_row];
+            $send_to_view_json[$first_dimension_index][] = $arr_weight_info;
+        }
+        return $send_to_view_json;
     }
 
     /**

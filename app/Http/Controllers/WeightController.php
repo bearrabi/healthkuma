@@ -16,7 +16,7 @@ class WeightController extends Controller
     {
         //get db data from weights table by id
         $id = auth()->user()->id;
-        $weights = Weight::where('user_id', $id)->get();
+        $weights = Weight::where('user_id', $id)->orderby('measure_dt')->get();
         //dd($weights);
         return view('weight.index', compact('weights'));
     }
