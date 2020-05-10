@@ -2,9 +2,7 @@
 
 @section('content')
 <style>
-  .graph{ 
-    width: 100%;
-    }
+  .graph{ width: 100%;  }
 </style>
 <div class="container">
   <h2>Weight</h2>
