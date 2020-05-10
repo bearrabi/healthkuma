@@ -77,99 +77,101 @@
     google.charts.load('current', {packages: ['corechart']});
     // ロード完了まで待機
     google.charts.setOnLoadCallback(drawChart_w);
-    google.charts.setOnLoadCallback(drawChart_t);
+    google.charts.setOnLoadCallback(drawChart_t); 
 
     // コールバック関数の実装
     function drawChart_w() {
         // PHPからjsonデータは取得
         let json_data = <?php echo $json_for_graph_w; ?>;
+        
+        let measured_contents = 'weight';
+        let chart_labels_arr  = ['日付','体重'];
+        let chart_title_base  = '体重の推移'
+        let graph_tag_id_base = 'w-graph-';
 
-        // 月毎のデータをセット
-        let last_graph_obj;
-        for(let i=0;i<json_data.length;i++){
-
-          //変数の初期化
-          let array_dates_and_weights = [['日付','体重']];
-          let year_month = "";
-
-          //日毎のデータをセット
-          Object.keys(json_data[i]).forEach(function(key){
-            if (key == 'year_month'){ year_month = json_data[i]['json_data'];}
-            else{
-              day_number = json_data[i][key]['weight_info']['day'];
-              weight_float = parseFloat(json_data[i][key]['weight_info']['weight']);
-              array_dates_and_weights.push([day_number,weight_float]);
-            }
-          });
-
-          //表示用データに置換
-          var data = google.visualization.arrayToDataTable(array_dates_and_weights);
-          
-          // オプション設定
-          var options = {
-              title: '体重の推移 '+json_data[i]['year_month'],
-              seriesType: "line",
-              series: {1: {type: "line"}}
-          };
-
-          //グラフの挿入場所を検索
-          let id_name_base = "w-graph-";
-          let id_name = id_name_base + i.toString();        
-
-          // インスタンス化と描画
-          let graph_obj = document.getElementById(id_name);
-          var chart = new google.visualization.ComboChart(graph_obj);
-          chart.draw(data, options);
-
-          let next_graph_id_name = id_name_base + (i+1).toString();
-          graph_obj.insertAdjacentHTML('afterend',"<div class='graph' id='"+next_graph_id_name+"'></div>");
-        }
+        //チャートの描画
+        DrawChart(measured_contents, chart_labels_arr, chart_title_base, graph_tag_id_base, json_data);
     }
 
+    //コールバック関数の実装
     function drawChart_t() {
         // PHPからjsonデータは取得
         let json_data = <?php echo $json_for_graph_t; ?>;
+        
+        //描画用関数に渡す引数の準備
+        let measured_contents = 'temperature';
+        let chart_labels_arr  = ['日付','体温'];
+        let chart_title_base  = '体温の推移'
+        let graph_tag_id_base = 't-graph-';
 
-        // 月毎のデータをセット
-        let last_graph_obj;
-        for(let i=0;i<json_data.length;i++){
+        //チャートの描画
+        DrawChart(measured_contents, chart_labels_arr, chart_title_base, graph_tag_id_base, json_data);
+    }
 
-          //変数の初期化
-          let array_dates_and_temps = [['日付','体温']];
-          let year_month = "";
+    //チャート描画用関数
+    function DrawChart(m_measured_contetns, m_arr_chart_labels, m_chart_title_base, m_graph_tag_id_base, m_json_data){
 
-          //日毎のデータをセット
-          Object.keys(json_data[i]).forEach(function(key){
-            if (key == 'year_month'){ year_month = json_data[i]['json_data'];}
-            else{
-              day_number = json_data[i][key]['temperature_info']['day'];
-              temp_float = parseFloat(json_data[i][key]['temperature_info']['temperature']);
-              array_dates_and_temps.push([day_number,temp_float]);
-            }
-          });
+      //毎月のデータをセット
+      for (let i=0;i<m_json_data.length;i++){
+      
+        //ラベルを初期化
+        let json_labels_arr =[m_arr_chart_labels];
+        
+        //チャートを表示する対象の年月を取得
+        let year_month = m_json_data[i]['year_month'];
 
-          //表示用データに置換
-          var data = google.visualization.arrayToDataTable(array_dates_and_temps);
-          
-          // オプション設定
-          var options = {
-              title: '体温の推移 '+json_data[i]['year_month'],
-              seriesType: "line",
-              series: {1: {type: "line"}}
-          };
+        //グーグルチャートで表示するテーブルに変換前のデータを作成
+        let datas_before_cnv_gtable = CreateDataBeforeConvGoogleTable(m_measured_contetns, m_arr_chart_labels, year_month, m_json_data[i]);
 
-          //グラフの挿入場所を検索
-          let id_name_base = "t-graph-"
-          let id_name = id_name_base + i.toString();        
+        //googleチャートで表示する様式に配列を変換する
+        let show_gchart_table = google.visualization.arrayToDataTable(datas_before_cnv_gtable);
 
-          // インスタンス化と描画
-          let graph_obj = document.getElementById(id_name);
-          var chart = new google.visualization.ComboChart(graph_obj);
-          chart.draw(data, options);
+        //表示するグラフのオプションを設定
+        var options = {
+            title: m_chart_title_base + ' ' + year_month,
+            seriesType: "line",
+            series: {1: {type: "line"}}
+        };
 
-          let next_graph_id_name = id_name_base + (i+1).toString();
-          graph_obj.insertAdjacentHTML('afterend',"<div class='graph' id='"+next_graph_id_name+"'></div>");
-        }
+        //グラフの挿入場所を検索する時のID名
+        let id_name = m_graph_tag_id_base + i.toString();
+        
+        // インスタンス化と描画
+        let graph_obj = document.getElementById(id_name);
+        var chart = new google.visualization.ComboChart(graph_obj);
+        chart.draw(show_gchart_table, options);
+
+        //次のグラフの準備
+        let next_graph_id_name = m_graph_tag_id_base + (i+1).toString();
+        graph_obj.insertAdjacentHTML('afterend',"<div class='graph' id='"+next_graph_id_name+"'></div>");
+      }
+    }
+
+    //グーグルチャートに表示するテーブルデータに変換する前のデータを作成
+    function CreateDataBeforeConvGoogleTable(m_measured_contetns, m_arr_chart_labels, m_year_month, m_json_data_row){
+
+      //テーブル変換前の配列データを初期化　　※ヘッダーをセット
+      let datas_before_conv_google_table = [m_arr_chart_labels];
+
+      //jsonデータから日付に紐づいた情報を配列へ格納
+      Object.keys(m_json_data_row).forEach(function(key){
+        
+        //PHPから受け取ったjsonデータから年月とそれぞれの値を取得
+        if (key != 'year_month'){
+
+            //取得対象のjsonデータのラベル名をセット
+            let measured_contents_info_label = m_measured_contetns + '_info';
+
+            //対象ラベル名から、日付と測定したデータを取得する
+            let day_number = m_json_data_row[key][measured_contents_info_label]['day'];
+            let measured_val_float = parseFloat(m_json_data_row[key][measured_contents_info_label][m_measured_contetns]);
+
+            //取得したデータをグラフで表示するための配列に格納する
+            datas_before_conv_google_table.push([day_number,measured_val_float]);
+          }
+        });
+
+        return datas_before_conv_google_table;
     }
   </script>
 @endsection
