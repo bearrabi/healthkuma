@@ -40,7 +40,7 @@ class UserController extends Controller
         $json_for_graph_t = json_encode($temps_info_before_json);
 
         //dd($json_for_graph_t);
-        return view('user.index', compact('weights','temps','json_for_graph_w'));
+        return view('user.index', compact('weights','temps','json_for_graph_w','json_for_graph_t'));
     }
 
     //create view's graph data
