@@ -1,6 +1,6 @@
 @extends('layouts.app')
-@include('layouts.header')
-@include('layouts.navbar')
+@include('layouts.sections.header')
+@include('layouts.sections.navbar')
 @section('content')
 <style>
   .graph{ width: 100%;  }
