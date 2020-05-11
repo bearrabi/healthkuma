@@ -1,5 +1,6 @@
 @extends('layouts.app')
-
+@include('layouts.header')
+@include('layouts.navbar')
 @section('content')
 <style>
   .graph{ width: 100%;  }
@@ -20,16 +21,11 @@
           <td>{{$weight->measure_dt}}</td>
           <td>{{$weight->weight}} kg</td>
           <td>
-            <div class="container">
-              <div class="row">
-                <a class="btn btn-primary" href="{{ action('WeightController@edit', $weight->id)}}">編集</a>
-                <form id="delete" method="POST" action="{{ action('WeightController@destroy', $weight->id)}}">
-                  @csrf
-                  @method('DELETE')
-                  <input type="submit" class="btn btn-danger" value="削除" onClick="delete_alert(event); return false;">
-                </form>
-              </div>
-            </div>
+          @component('user.inline_btn',['id'               => $weight->id,
+                                          'action_edit'    => 'WeightController@edit',
+                                          'action_destroy' => 'WeightController@destroy']
+            )
+          @endcomponent
           </td>
         </tr>
       @endforeach
@@ -54,16 +50,11 @@
           <td>{{$temp->measure_dt}}</td>
           <td>{{$temp->temperature}}°</td>
           <td>
-            <div class="container">
-            <div class="row">
-              <a class="btn btn-primary" href="{{ action('TemperatureController@edit', $temp->id)}}">編集</a>
-              <form id="delete" method="POST" action="{{ action('TemperatureController@destroy', $temp->id)}}">
-                @csrf
-                @method('DELETE')
-                <input type="submit" class="btn btn-danger" value="削除" onClick="delete_alert(event); return false;">
-              </form>
-              </div>
-            </div>
+            @component('user.inline_btn',['id'             => $temp->id,
+                                          'action_edit'    => 'TemperatureController@edit',
+                                          'action_destroy' => 'TemperatureController@destroy']
+            )
+            @endcomponent
           </td>
         </tr>
       @endforeach
@@ -71,6 +62,7 @@
     </table>
   </div>
 </div>
+
 <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
     // パッケージのロード
