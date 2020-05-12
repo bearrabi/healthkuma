@@ -1,5 +1,6 @@
 @extends('layouts.app')
-
+@include('layouts.sections.header')
+@include('layouts.sections.navbar')
 @section('content')
 <style>
 .txtbx{margin: 0 10px 0 20px;}
