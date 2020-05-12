@@ -6,43 +6,29 @@
   .graph{ width: 100%;  }
 </style>
 <div class="container">
+
   <h2>Weight</h2>
   <div class="row">
     <div class="graph" id="w-graph-0"></div>
   </div>
+
   <div class="row">
-    @component('weight.components.table',['weights' => $weights])
-    @endcomponent
+    @component('weight.components.table',['weights' => $weights])   @endcomponent
   </div>
+
   <br>
   <br>
   <br>
+
   <h2>Temperature</h2>
   <div class="row">
     <div class="graph" id="t-graph-0"></div>
   </div>
+
   <div class="row">
-    <table class="table table-striped">
-      <thead class="thead-dark">
-        <tr><th scope="col">Date</th><th scope="col">Weight</th><th scope="col">Operation</th></tr>
-      </thead>
-      <tbody>
-      @foreach ($temps as $temp)
-        <tr>
-          <td>{{$temp->measure_dt}}</td>
-          <td>{{$temp->temperature}}°</td>
-          <td>
-            @component('user.components.inline_btn',['id'             => $temp->id,
-                                          'action_edit'    => 'TemperatureController@edit',
-                                          'action_destroy' => 'TemperatureController@destroy']
-            )
-            @endcomponent
-          </td>
-        </tr>
-      @endforeach
-      </tbody>
-    </table>
+    @component('temperature.components.table',['temps' => $temps])  @endcomponent
   </div>
+  
 </div>
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>
