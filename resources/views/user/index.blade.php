@@ -11,26 +11,8 @@
     <div class="graph" id="w-graph-0"></div>
   </div>
   <div class="row">
-    <table class="table table-striped">
-      <thead class="thead-dark">
-        <tr><th scope="col">Date</th><th scope="col">Weight</th><th scope="col">Operation</th></tr>
-      </thead>
-      <tbody>
-      @foreach ($weights as $weight)
-        <tr>
-          <td>{{$weight->measure_dt}}</td>
-          <td>{{$weight->weight}} kg</td>
-          <td>
-          @component('user.inline_btn',['id'               => $weight->id,
-                                          'action_edit'    => 'WeightController@edit',
-                                          'action_destroy' => 'WeightController@destroy']
-            )
-          @endcomponent
-          </td>
-        </tr>
-      @endforeach
-      </tbody>
-    </table>
+    @component('weight.components.table',['weights' => $weights])
+    @endcomponent
   </div>
   <br>
   <br>
@@ -50,7 +32,7 @@
           <td>{{$temp->measure_dt}}</td>
           <td>{{$temp->temperature}}°</td>
           <td>
-            @component('user.inline_btn',['id'             => $temp->id,
+            @component('user.components.inline_btn',['id'             => $temp->id,
                                           'action_edit'    => 'TemperatureController@edit',
                                           'action_destroy' => 'TemperatureController@destroy']
             )
