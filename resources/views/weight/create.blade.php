@@ -12,27 +12,22 @@
 <div class="container">
   <div class="row">
     <form method="POST" action="{{ route('weight.store') }}">
-    @csrf
+      @csrf
 
-    <!--年月日-->
-    @component('layouts.components.date_create_form', ['years' => $years, 'months' => $months, 'days' => $days])
-    @endcomponent
+      <!--年月日-->
+      @component('layouts.components.date_create_form', ['years' => $years, 'months' => $months, 'days' => $days])
+      @endcomponent
 
-    <br><br>
+      <br><br>
 
-    <!--時分秒-->
-    @component('layouts.components.time_create_form', ['hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds])
-    @endcomponent
+      <!--時分秒-->
+      @component('layouts.components.time_create_form', ['hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds])
+      @endcomponent
       <br><br>
 
       <!--体重-->
-      <div class="form-group">
-        <label for="weight1">体重</label>
-      </div>
-      <div class="form-inline">
-        <input name="weight1" type="text" class="form-control txtbx" id="weight1"><span id="dot">.</span>
-        <input name="weight2" type="text" class="form-control txtbx" id="weight2">kg
-      </div>
+      @component('layouts.components.main_create_form',['contents_name' => 'weight', 'label_name' => '体重', 'unit' => 'Kg'])
+      @endcomponent
       <br><br>
 
       <!--更新ボタン-->
