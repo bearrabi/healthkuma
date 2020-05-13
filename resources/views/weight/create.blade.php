@@ -13,39 +13,10 @@
   <div class="row">
     <form method="POST" action="{{ route('weight.store') }}">
     @csrf
-      <!--日付-->
-      <div class="form-group">
-        <label for="year">日付</label>
-      </div>
-      <div class="form-inline">
-        <select name="year" id="year" class="form-control selectbx">
-            @foreach($years as $key => $value)
-              @if ($value == true)
-                <option value="{{$key}}" selected>{{$key}}</option>
-              @else
-                <option value="{{$key}}">{{$key}}</option>
-              @endif
-            @endforeach
-        </select>年
-        <select name="month" id="month" class="form-control selectbx">
-            @foreach($months as $key => $value)
-              @if ($value == true)
-                <option value="{{$key}}" selected>{{$key}}</option>
-              @else
-                <option value="{{$key}}">{{$key}}</option>
-              @endif
-            @endforeach
-        </select>月
-        <select name="day" id="day" class="form-control selectbx">
-            @foreach($days as $key => $value)
-              @if ($value == true)
-                <option value="{{$key}}" selected>{{$key}}</option>
-              @else
-                <option value="{{$key}}">{{$key}}</option>
-              @endif
-            @endforeach
-        </select>日
-      </div>
+
+    @component('layouts.components.date_create_form', ['years' => $years, 'months' => $months, 'days' => $days])
+    @endcomponent
+
       <br><br>
 
       <!--時刻-->
