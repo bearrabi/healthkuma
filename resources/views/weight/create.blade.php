@@ -14,45 +14,15 @@
     <form method="POST" action="{{ route('weight.store') }}">
     @csrf
 
+    <!--年月日-->
     @component('layouts.components.date_create_form', ['years' => $years, 'months' => $months, 'days' => $days])
     @endcomponent
 
-      <br><br>
+    <br><br>
 
-      <!--時刻-->
-      <div class="form-group">
-        <label for="hour">時刻</label>
-      </div>
-      <div class="form-inline">
-      <select name="hour" id="hour" class="form-control selectbx">
-            @foreach($hours as $key => $value)
-              @if ($value == true)
-                <option value="{{$key}}" selected>{{$key}}</option>
-              @else
-                <option value="{{$key}}">{{$key}}</option>
-              @endif
-            @endforeach
-        </select>時
-        <select name="minute" id="minute" class="form-control selectbx">
-            @foreach($minutes as $key => $value)
-              @if ($value == true)
-                <option value="{{$key}}" selected>{{$key}}</option>
-              @else
-                <option value="{{$key}}">{{$key}}</option>
-              @endif
-            @endforeach
-        </select>分
-        <select name="second" id="second" class="form-control selectbx">
-            @foreach($seconds as $key => $value)
-              @if ($value == true)
-                <option value="{{$key}}" selected>{{$key}}</option>
-              @else
-                <option value="{{$key}}">{{$key}}</option>
-              @endif
-            @endforeach
-        </select>秒
-        
-      </div>
+    <!--時分秒-->
+    @component('layouts.components.time_create_form', ['hours' => $hours, 'minutes' => $minutes, 'seconds' => $seconds])
+    @endcomponent
       <br><br>
 
       <!--体重-->
