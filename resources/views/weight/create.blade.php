@@ -4,7 +4,7 @@
 @section('content')
 <style>
 .txtbx,.selectbx{margin: 0 5px 0 25px;}
-#dot{ 
+#dot,#unit{ 
   font-weight: bold;
   font-size: 24px;
 }
