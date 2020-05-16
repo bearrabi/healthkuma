@@ -1,5 +1,6 @@
 @extends('layouts.app')
-
+@include('layouts.sections.header')
+@include('layouts.sections.navbar')
 @section('content')
 <style>
 .txtbx{margin: 0 10px 0 20px;}
@@ -18,7 +19,7 @@
         <label for="year">日付</label>
       </div>
       <div class="form-inline">
-        <input name="year" type="tet" class="form-control txtbx" id="year" value="{{$temperatures['year']}}" readonly>年 &nbsp;&nbsp;
+        <input name="year" type="text" class="form-control txtbx" id="year" value="{{$temperatures['year']}}" readonly>年 &nbsp;&nbsp;
         <input name="month" type="text" class="form-control txtbx" id="month" value="{{$temperatures['month']}}" readonly>月 &nbsp;&nbsp;
         <input name="day" type="text" class="form-control txtbx" id="day"  value="{{$temperatures['day']}}" readonly>日
       </div>
@@ -29,7 +30,7 @@
         <label for="hour">時刻</label>
       </div>
       <div class="form-inline">
-        <input name="hour" type="tet" class="form-control txtbx" id="hour" value="{{$temperatures['hour']}}" readonly>時 &nbsp;&nbsp;
+        <input name="hour" type="text" class="form-control txtbx" id="hour" value="{{$temperatures['hour']}}" readonly>時 &nbsp;&nbsp;
         <input name="minute" type="text" class="form-control txtbx" id="minute" value="{{$temperatures['minute']}}" readonly>分 &nbsp;&nbsp;
         <input name="second" type="text" class="form-control txtbx" id="second"  value="{{$temperatures['second']}}" readonly>秒
       </div>

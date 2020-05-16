@@ -1,76 +1,36 @@
 @extends('layouts.app')
-
+@include('layouts.sections.header')
+@include('layouts.sections.navbar')
 @section('content')
 <style>
   .graph{ width: 100%;  }
 </style>
 <div class="container">
+
   <h2>Weight</h2>
   <div class="row">
     <div class="graph" id="w-graph-0"></div>
   </div>
+
   <div class="row">
-    <table class="table table-striped">
-      <thead class="thead-dark">
-        <tr><th scope="col">Date</th><th scope="col">Weight</th><th scope="col">Operation</th></tr>
-      </thead>
-      <tbody>
-      @foreach ($weights as $weight)
-        <tr>
-          <td>{{$weight->measure_dt}}</td>
-          <td>{{$weight->weight}} kg</td>
-          <td>
-            <div class="container">
-              <div class="row">
-                <a class="btn btn-primary" href="{{ action('WeightController@edit', $weight->id)}}">編集</a>
-                <form id="delete" method="POST" action="{{ action('WeightController@destroy', $weight->id)}}">
-                  @csrf
-                  @method('DELETE')
-                  <input type="submit" class="btn btn-danger" value="削除" onClick="delete_alert(event); return false;">
-                </form>
-              </div>
-            </div>
-          </td>
-        </tr>
-      @endforeach
-      </tbody>
-    </table>
+    @component('weight.components.table',['weights' => $weights])   @endcomponent
   </div>
+
   <br>
   <br>
   <br>
+
   <h2>Temperature</h2>
   <div class="row">
     <div class="graph" id="t-graph-0"></div>
   </div>
+
   <div class="row">
-    <table class="table table-striped">
-      <thead class="thead-dark">
-        <tr><th scope="col">Date</th><th scope="col">Weight</th><th scope="col">Operation</th></tr>
-      </thead>
-      <tbody>
-      @foreach ($temps as $temp)
-        <tr>
-          <td>{{$temp->measure_dt}}</td>
-          <td>{{$temp->temperature}}°</td>
-          <td>
-            <div class="container">
-            <div class="row">
-              <a class="btn btn-primary" href="{{ action('TemperatureController@edit', $temp->id)}}">編集</a>
-              <form id="delete" method="POST" action="{{ action('TemperatureController@destroy', $temp->id)}}">
-                @csrf
-                @method('DELETE')
-                <input type="submit" class="btn btn-danger" value="削除" onClick="delete_alert(event); return false;">
-              </form>
-              </div>
-            </div>
-          </td>
-        </tr>
-      @endforeach
-      </tbody>
-    </table>
+    @component('temperature.components.table',['temps' => $temps])  @endcomponent
   </div>
+  
 </div>
+
 <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
     // パッケージのロード
