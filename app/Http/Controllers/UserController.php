@@ -129,7 +129,7 @@ class UserController extends Controller
     //create first weeks info
     private function CreateCalenderMonthInfo($m_now, $m_holidays){
 
-        //set week start adn week end
+        //set week start and week end
         CarbonImmutable::setWeekStartsAt(CarbonImmutable::SUNDAY);
         CarbonImmutable::setWeekEndsAt(CarbonImmutable::SATURDAY);
 
