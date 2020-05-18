@@ -33,6 +33,10 @@
     @component('temperature.components.table',['temps' => $temps])  @endcomponent
   </div>
 
+  <div class="row">
+    @component('layouts.components.calender', ['month' => $temps_calender])   @endcomponent
+  </div>
+
 </div>
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>
