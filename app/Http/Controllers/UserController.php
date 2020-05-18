@@ -24,11 +24,13 @@ class UserController extends Controller
         //get auth ID
         $id = auth()->user()->id;
 
-        //get user's weights info
-        $weights = Weight::where('user_id', $id)->orderby('measure_dt')->get();
+        //get user's weights info of current month
+        $first_day_of_cur_month = CarbonImmutable::now()->firstOfMonth();
+        $end_day_of_cur_month   = CarbonImmutable::now()->lastOfMonth();
+        $weights = Weight::where('user_id', $id)->whereBetween('measure_dt',[$first_day_of_cur_month, $end_day_of_cur_month])->orderby('measure_dt')->get();
 
-        //get user's templeture info
-        $temps = Temperature::where('user_id', $id)->orderby('measure_dt')->get();
+        //get user's templeture info of current month
+        $temps = Temperature::where('user_id', $id)->whereBetween('measure_dt',[$first_day_of_cur_month, $end_day_of_cur_month])->orderby('measure_dt')->get();
 
         //get current month calender info of weight
         $weights_calender = $this->CreateCalenderInfo($weights);
