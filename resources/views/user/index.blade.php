@@ -16,6 +16,10 @@
     @component('weight.components.table',['weights' => $weights])   @endcomponent
   </div>
 
+  <div class="row">
+    @component('layouts.components.calender', ['month' => $weights_calender])   @endcomponent
+  </div>
+
   <br>
   <br>
   <br>
@@ -28,7 +32,7 @@
   <div class="row">
     @component('temperature.components.table',['temps' => $temps])  @endcomponent
   </div>
-  
+
 </div>
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>
