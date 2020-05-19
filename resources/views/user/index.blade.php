@@ -4,16 +4,21 @@
 @section('content')
 <style>
   .graph{ width: 100%;  }
+  .user-views{  height: 620px;}
 </style>
 <div class="container">
 
   <h2>Weight</h2>
-  <div class="row">
+  <div class="row user-views">
     <div class="graph" id="w-graph-0"></div>
   </div>
 
-  <div class="row">
-    @component('weight.components.table',['weights' => $weights])   @endcomponent
+  <div class="row user-views">
+    @component('weight.components.table',['weights' => $weights, 'title_base' => $title_base])   @endcomponent
+  </div>
+
+  <div class="row user-views">
+    @component('layouts.components.calender', ['month' => $weights_calender, 'title_base' => $title_base])   @endcomponent
   </div>
 
   <br>
@@ -21,14 +26,18 @@
   <br>
 
   <h2>Temperature</h2>
-  <div class="row">
+  <div class="row user-views">
     <div class="graph" id="t-graph-0"></div>
   </div>
 
-  <div class="row">
-    @component('temperature.components.table',['temps' => $temps])  @endcomponent
+  <div class="row user-views">
+    @component('temperature.components.table',['temps' => $temps, 'title_base' => $title_base])  @endcomponent
   </div>
-  
+
+  <div class="row user-views">
+    @component('layouts.components.calender', ['month' => $temps_calender, 'title_base' => $title_base])   @endcomponent
+  </div>
+
 </div>
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>

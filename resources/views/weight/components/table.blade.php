@@ -1,3 +1,4 @@
+<h3>{{$title_base}}</h3>
 <table class="table table-striped">
   <thead class="thead-dark">
     <tr><th scope="col">Date</th><th scope="col">Weight</th><th scope="col">Operation</th></tr>

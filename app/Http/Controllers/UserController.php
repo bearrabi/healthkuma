@@ -7,6 +7,9 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\User;       //ユーザーモデル
 use App\Weight;     //weightモデル
 use App\Temperature;//temperatureモデル
+use \Yasumi\yasumi;
+use Carbon\CarbonImmutable;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -21,11 +24,23 @@ class UserController extends Controller
         //get auth ID
         $id = auth()->user()->id;
 
-        //get user's weights info
-        $weights = Weight::where('user_id', $id)->orderby('measure_dt')->get();
+        //create graph title and table title and calender title
+        $now = CarbonImmutable::now();
+        $title_base = $now->format('Y/m');
 
-        //get user's templeture info
-        $temps = Temperature::where('user_id', $id)->orderby('measure_dt')->get();
+        //get user's weights info of current month
+        $first_day_of_cur_month = $now->firstOfMonth();
+        $end_day_of_cur_month   = $now->lastOfMonth();
+        $weights = Weight::where('user_id', $id)->whereBetween('measure_dt',[$first_day_of_cur_month, $end_day_of_cur_month])->orderby('measure_dt')->get();
+
+        //get user's templeture info of current month
+        $temps = Temperature::where('user_id', $id)->whereBetween('measure_dt',[$first_day_of_cur_month, $end_day_of_cur_month])->orderby('measure_dt')->get();
+
+        //get current month calender info of weight
+        $weights_calender = $this->CreateCalenderInfo($weights);
+
+        //get current month calender info of temperature
+        $temps_calender = $this->CreateCalenderInfo($temps);
 
         //create views graph data at weight
         $weights_info_before_json = $this->CretateViewsGraphData($weights , 'weight');
@@ -39,8 +54,7 @@ class UserController extends Controller
         //encode array to json at temperature
         $json_for_graph_t = json_encode($temps_info_before_json);
 
-        //dd($json_for_graph_t);
-        return view('user.index', compact('weights','temps','json_for_graph_w','json_for_graph_t'));
+        return view('user.index', compact('weights','temps','json_for_graph_w','json_for_graph_t','weights_calender','temps_calender','title_base'));
     }
 
     //create view's graph data
@@ -76,6 +90,101 @@ class UserController extends Controller
         return $send_to_view_json;
     }
 
+
+    //create view's current month calender info
+    /*
+            month[
+                [
+                    [ day => '31', type => 'sunday'],
+                    [ day => '1', type => 'weekday' ],
+                    [ day => '2', type => 'weekday' ],
+                    [ day => '3', type => 'weekday' ],
+                    [ day => '4', type => 'weekday' ],
+                    [ day => '5', type => 'weekday' ],
+                    [ day => '6', type => 'saturday']
+                ],[
+                    [ day => '7', type => 'sunday'],
+                    [ day => '8', type => 'weekday'],
+                    [ day => '9', type => 'weekday'],
+                    [ day => '10', type => 'weekday'],
+                    [ day => '11', type => 'holiday'],
+                    [ day => '12', type => 'weekday'],
+                    [ day => '13', type => 'saturday']
+                ]
+            ]....
+
+            
+    */
+    private function CreateCalenderInfo(){
+
+        //get today 
+        $now = CarbonImmutable::now();
+
+        //get current year
+        $current_year = $now->year;
+
+        //get Japan holidays
+        $holidays = Yasumi::create('Japan', $current_year, 'ja_JP');
+
+        //get month info
+        $month = $this->CreateCalenderMonthInfo($now, $holidays);
+
+        return $month;
+    }
+
+    //create first weeks info
+    private function CreateCalenderMonthInfo($m_now, $m_holidays){
+
+        //set week start and week end
+        CarbonImmutable::setWeekStartsAt(CarbonImmutable::SUNDAY);
+        CarbonImmutable::setWeekEndsAt(CarbonImmutable::SATURDAY);
+
+        //get first day and last day of month
+        $first_day_of_month = $m_now->firstOfMonth();
+        $last_day_of_month = $m_now->lastOfMonth();
+        
+        //get first day and last day of week
+        $first_day_of_first_week = $first_day_of_month->startOfWeek();
+        $last_day_of_last_week = $last_day_of_month->endOfWeek();
+
+        //set month info array
+        $month_info = [];
+        $day = new Carbon($first_day_of_first_week);
+        $index = 0;
+        while(TRUE){
+            //$type: 'sunday' or 'saturday' or 'weekday' or 'holiday' of 'other_month' for set color of calender
+            $type = $this->GetDayType($day, $m_holidays);
+
+            //array by 1week
+            $week_info[] = ['day' => $day->day, 'type' => $type];
+            
+            //array by multi week for create 1month info
+            if ($type == "saturday"){ $month_info[] = $week_info;   $week_info = [];  }
+            
+            //break while when day is last day of month
+            if ($day->isSameday($last_day_of_last_week)){ $month_info[] = $week_info; break;    }
+
+            //next day
+            $day->addDay();
+        }
+        
+        return $month_info;
+    }
+    
+    //sunday or saturday or weekday or holiday
+    private function GetDayType($m_day, $m_holidays_arr){
+        
+        if ( !$m_day->isCurrentMonth()){ return "other_month";   }
+        if ( $m_day->isSunday()  ){     return "sunday";        }
+        if ( $m_day->isSaturday()){     return "saturday";      }
+        
+        foreach($m_holidays_arr as $holiday){
+            if ( $m_day->isSameday($holiday) ){   return "holiday";   }
+        }
+
+        return "weekday";
+
+    }
     /**
      * Display the specified resource.
      *
