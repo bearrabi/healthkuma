@@ -4,38 +4,85 @@
 @section('content')
 <style>
   .graph{ width: 100%;  }
-  .user-views{  height: 620px;}
+  .slide-back{ width: 100%; height: 650px; background-color: white;}
+  .user-views{  height: 650px; width: 100%;}
+  .sr-only{ color:black;}
+  #carouselControls-weight,#carouselControls-temp{ height: 700px; background-color: rgba(0,0,0,0.3); }
 </style>
 <div class="container">
 
   <h2>Weight</h2>
-  <div class="row user-views">
-    <div class="graph" id="w-graph-0"></div>
-  </div>
+  <div id="carouselControls-weight" class="carousel slide" data-ride="false">
 
-  <div class="row user-views">
-    @component('weight.components.table',['weights' => $weights, 'title_base' => $title_base])   @endcomponent
-  </div>
+    <!-- ページャー部分 -->
+    <ol class="carousel-indicators">
+      <li data-target="#carouselControls-weight" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselControls-weight" data-slide-to="1"></li>
+      <li data-target="#carouselControls-weight" data-slide-to="2"></li>
+    </ol>
 
-  <div class="row user-views">
-    @component('layouts.components.calender', ['month' => $weights_calender, 'title_base' => $title_base])   @endcomponent
+    <!--スライド部分-->
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="slide-back">
+          <div class="graph user-views" id="w-graph-0"></div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="slide-back">
+          <div class="user-views">
+            @component('weight.components.table',['weights' => $weights, 'title_base' => $title_base])   @endcomponent
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item" >
+        <div class="slide-back">
+          <div class="user-views">
+            @component('layouts.components.calender', ['month' => $weights_calender, 'title_base' => $title_base])   @endcomponent
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
+  
   <br>
   <br>
   <br>
 
   <h2>Temperature</h2>
-  <div class="row user-views">
-    <div class="graph" id="t-graph-0"></div>
-  </div>
+  <div id="carouselControls-temp" class="carousel slide" data-ride="false">
 
-  <div class="row user-views">
-    @component('temperature.components.table',['temps' => $temps, 'title_base' => $title_base])  @endcomponent
-  </div>
+    <!-- ページャー部分 -->
+    <ol class="carousel-indicators">
+      <li data-target="#carouselControls-temp" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselControls-temp" data-slide-to="1"></li>
+      <li data-target="#carouselControls-temp" data-slide-to="2"></li>
+    </ol>
 
-  <div class="row user-views">
-    @component('layouts.components.calender', ['month' => $temps_calender, 'title_base' => $title_base])   @endcomponent
+    <!--スライド部分-->
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="slide-back">
+          <div class="graph user-views" id="t-graph-0"></div>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <div class="slide-back">
+          <div class="user-views">
+            @component('temperature.components.table',['temps' => $temps, 'title_base' => $title_base])  @endcomponent
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-item" >
+        <div class="slide-back">
+          <div class="user-views">
+            @component('layouts.components.calender', ['month' => $temps_calender, 'title_base' => $title_base])   @endcomponent
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -111,8 +158,8 @@
         chart.draw(show_gchart_table, options);
 
         //次のグラフの準備
-        let next_graph_id_name = m_graph_tag_id_base + (i+1).toString();
-        graph_obj.insertAdjacentHTML('afterend',"<div class='graph' id='"+next_graph_id_name+"'></div>");
+        //let next_graph_id_name = m_graph_tag_id_base + (i+1).toString();
+        //graph_obj.insertAdjacentHTML('afterend',"<div class='graph' id='"+next_graph_id_name+"'></div>");
       }
     }
 
