@@ -24,9 +24,13 @@ class UserController extends Controller
         //get auth ID
         $id = auth()->user()->id;
 
+        //create graph title and table title and calender title
+        $now = CarbonImmutable::now();
+        $title_base = $now->format('Y/m');
+
         //get user's weights info of current month
-        $first_day_of_cur_month = CarbonImmutable::now()->firstOfMonth();
-        $end_day_of_cur_month   = CarbonImmutable::now()->lastOfMonth();
+        $first_day_of_cur_month = $now->firstOfMonth();
+        $end_day_of_cur_month   = $now->lastOfMonth();
         $weights = Weight::where('user_id', $id)->whereBetween('measure_dt',[$first_day_of_cur_month, $end_day_of_cur_month])->orderby('measure_dt')->get();
 
         //get user's templeture info of current month
@@ -50,7 +54,7 @@ class UserController extends Controller
         //encode array to json at temperature
         $json_for_graph_t = json_encode($temps_info_before_json);
 
-        return view('user.index', compact('weights','temps','json_for_graph_w','json_for_graph_t','weights_calender','temps_calender'));
+        return view('user.index', compact('weights','temps','json_for_graph_w','json_for_graph_t','weights_calender','temps_calender','title_base'));
     }
 
     //create view's graph data
