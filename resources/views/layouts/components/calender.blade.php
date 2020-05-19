@@ -23,7 +23,7 @@
   .calender{ width: 100%;}
   .calender tr th,.calender tr td{  text-align: center; }
   .calender tr th{  font-size: 16px; font-weight: bold; }
-  .calender tr td{  height: 100px; }
+  .calender tr td{  height: 90px; }
   .calender tr td:hover{  background-color: rgba(127,255,212,0.5);}
 
   /*曜日に合わせて色をセット*/
