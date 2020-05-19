@@ -1,3 +1,4 @@
+<h2>{{$title_base}}</h2>
 <table class="calender" border="1">
   <tr>
     <th class="day_name h_sunday">日</th>
